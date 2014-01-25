@@ -24,8 +24,11 @@ class World
         bool generate();
 
         void update(sf::Time elapsedTime);
+        void markPosition();
+        Itineraire getPlayerPath();
 
         void draw();
+
         void drawConsole(); // debug only
     protected:
 

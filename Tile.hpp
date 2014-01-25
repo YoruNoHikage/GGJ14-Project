@@ -23,9 +23,15 @@ class Tile
 
         // use it to draw on the terminal
         virtual char toChar() = 0;
+
+        bool alreadyVisited();
+        void visit();
+        void forgot();
+
     protected:
 
     private:
+        bool _visited;
 };
 
 

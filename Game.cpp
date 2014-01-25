@@ -73,6 +73,37 @@ void Game::gameLoop()
     _app.draw(_background);
 
     _world.draw();
+    displayPath();
 
     _app.display();
+}
+
+void Game::displayPath()
+{
+    sf::Vector2f size(PATH_WIDTH * 4/5, PATH_HEIGHT * 4/5);
+    sf::Vector2f currPos;
+
+    currPos.x = VIEW_WIDTH / 2 - PATH_WIDTH / 2;
+    currPos.y = VIEW_HEIGHT / 2 - PATH_HEIGHT / 2;
+
+
+    Itineraire pathPlayer = _world.getPlayerPath();
+
+    for(int i = pathPlayer.size(); i > 0; i--)
+    {
+        sf::RectangleShape square(size);
+        square.setFillColor(sf::Color::Black);
+        square.setPosition(currPos);
+
+        _app.draw(square);
+
+        if(pathPlayer[i] == TOP)
+            currPos.y -= PATH_HEIGHT;
+        else if(pathPlayer[i] == BOT)
+            currPos.y += PATH_HEIGHT;
+        else if(pathPlayer[i] == LEFT)
+            currPos.x -= PATH_WIDTH;
+        else if(pathPlayer[i] == RIGHT)
+            currPos.x += PATH_WIDTH;
+    }
 }

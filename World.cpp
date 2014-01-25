@@ -70,6 +70,30 @@ void World::update(sf::Time elapsedTime)
         else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
             deltaX = -1;
 
+        ///@todo: delete
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+        {
+            _player.moveInWorld(0, 1);
+            markPosition();
+        }
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+        {
+            _player.moveInWorld(0, -1);
+            markPosition();
+        }
+
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+        {
+            _player.moveInWorld(1, 0);
+            markPosition();
+        }
+        else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+        {
+            _player.moveInWorld(-1, 0);
+            markPosition();
+        }
+        /// end todo
+
         if(deltaX != 0 || deltaY != 0)
         {
             // updating positions
@@ -106,6 +130,16 @@ void World::update(sf::Time elapsedTime)
     }
 }
 
+void World::markPosition()
+{
+    _tiles[_player.getPosition().x][_player.getPosition().y]->visit();
+}
+
+Itineraire World::getPlayerPath()
+{
+    return _player.getPath();
+}
+
 void World::draw()
 {
 }
@@ -119,10 +153,11 @@ void World::drawConsole()
         {
             if(_player.getPosition().y == i && _player.getPosition().x == j)
                 std::cout << "X";
+            else if(_tiles[j][i]->alreadyVisited())
+                std::cout << "+";
             else
                 std::cout << _tiles[j][i]->toChar();
         }
-
         std::cout << std::endl;
     }
 }

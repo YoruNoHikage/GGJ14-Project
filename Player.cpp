@@ -23,3 +23,26 @@ void Player::setPosition(sf::Vector2i position)
 {
     _position = position;
 }
+
+Itineraire Player::getPath()
+{
+    return _path;
+}
+
+///@todo: delete
+void Player::moveInWorld(int x, int y)
+{
+    if(x > 0 && y == 0)
+        _path.push_back(LEFT);
+    else if(x < 0 && y == 0)
+        _path.push_back(RIGHT);
+    else if(x == 0 && y > 0)
+        _path.push_back(TOP);
+    else if(x == 0 && y < 0)
+        _path.push_back(BOT);
+
+    if(_path.size() > 20)
+        _path.erase(_path.begin());
+}
+
+

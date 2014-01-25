@@ -18,6 +18,7 @@ class Game
     private:
         bool init();
         void gameLoop();
+        void displayPath();
 
         bool _isExiting;
 
