@@ -19,6 +19,7 @@ void Player::setPosition(int x, int y)
     _position.y = y;
 }
 
+///@todo: circular world
 void Player::moveInWorld(int x, int y)
 {
     if(x != 0)

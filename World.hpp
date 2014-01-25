@@ -7,7 +7,7 @@
 
 #include "config.hpp"
 
-#include "Tile.hpp"
+#include "EmptyTile.hpp"
 #include "Player.hpp"
 
 typedef std::vector<Tile*> ArrayTile;

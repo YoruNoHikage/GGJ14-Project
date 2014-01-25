@@ -30,10 +30,12 @@ bool World::generate()
         for(int j(0) ; j < WORLD_WIDTH ; j++)
         {
             // remplissage des tableaux
-            _tiles[i][j] = new Tile(); ///@todo: update with the different inherited Tile
+            _tiles[i][j] = new EmptyTile(); ///@todo: update with the different inherited Tile
 
             // end tile
         }
+
+    _isLoaded = true;
 
     return true;
 }
@@ -48,6 +50,7 @@ void World::update(sf::Time elapsedTime)
 
         // Player moves in the world
         ///@todo: collisions
+        sf::Vector2i oldPosition = _player.getPosition();
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
         {
             _player.moveInWorld(0, 1);
@@ -69,6 +72,9 @@ void World::update(sf::Time elapsedTime)
             _player.moveInWorld(-1, 0);
             drawConsole();
         }
+
+        if(oldPosition != _player.getPosition())
+            _tiles[_player.getPosition().y][_player.getPosition().x]->onEnter();
     }
 }
 
@@ -86,7 +92,7 @@ void World::drawConsole()
             if(_player.getPosition().y == i && _player.getPosition().x == j)
                 std::cout << "X";
             else
-                std::cout << "0";
+                std::cout << _tiles[j][i]->toChar();
         }
 
         std::cout << std::endl;
