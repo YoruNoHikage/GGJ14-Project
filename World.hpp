@@ -3,10 +3,18 @@
 
 #include <vector>
 
+#include "SFML/Graphics.hpp"
+
+#include "config.hpp"
+
 #include "Tile.hpp"
+#include "Player.hpp"
 
-typedef std::vector< std::vector<Tile*> > ArrayTile;
+typedef std::vector<Tile*> ArrayTile;
+typedef std::vector<ArrayTile> Array2DTile;
 
+/** \brief This is the World where the player is
+ */
 class World
 {
     public:
@@ -15,13 +23,17 @@ class World
 
         bool generateWorld();
 
-        void update();
+        void update(sf::Time elapsedTime);
 
         void draw();
+        void drawConsole(); // debug only
     protected:
 
     private:
-        ArrayTile _tiles;
+        Player _player;
+        Array2DTile _tiles;
+
+        sf::Time _elapsedTime;
 
         bool _isLoaded; // if not, we can't draw/use it
 };

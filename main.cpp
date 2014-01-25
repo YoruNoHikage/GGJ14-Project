@@ -1,11 +1,14 @@
 #include <iostream>
 #include <cstdlib>
 
-#include "World.hpp"
+#include "SFML/Graphics.hpp"
 
-int main()
+#include "Game.hpp"
+
+int main(int argc, char *argv[])
 {
-    World world;
+    Game game;
+    game.start();
 
     return EXIT_SUCCESS;
 }
