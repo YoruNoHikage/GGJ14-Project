@@ -50,31 +50,53 @@ void World::update(sf::Time elapsedTime)
 
         // Player moves in the world
         ///@todo: collisions
-        sf::Vector2i oldPosition = _player.getPosition();
+        sf::Vector2i oldPosition(_player.getPosition());
+        sf::Vector2i newPosition(oldPosition);
+
+        int deltaX(0), deltaY(0);
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-        {
-            _player.moveInWorld(0, 1);
-            drawConsole();
-        }
+            deltaY = 1;
         else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-        {
-            _player.moveInWorld(0, -1);
-            drawConsole();
-        }
+            deltaY = -1;
 
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-        {
-            _player.moveInWorld(1, 0);
-            drawConsole();
-        }
+            deltaX = 1;
         else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-        {
-            _player.moveInWorld(-1, 0);
-            drawConsole();
-        }
+            deltaX = -1;
 
-        if(oldPosition != _player.getPosition())
-            _tiles[_player.getPosition().y][_player.getPosition().x]->onEnter();
+        if(deltaX != 0 || deltaY != 0)
+        {
+            // updating positions
+            newPosition.x += deltaX;
+            newPosition.y += deltaY;
+
+            // circular map
+            if(newPosition.x >= WORLD_WIDTH)
+                newPosition.x = 0;
+            else if(newPosition.x < 0)
+                newPosition.x = WORLD_WIDTH -1;
+
+            if(newPosition.y >= WORLD_HEIGHT)
+                newPosition.y = 0;
+            else if(newPosition.y < 0)
+                newPosition.y = WORLD_HEIGHT -1;
+
+            // bumping with an obstacle
+            if(!_tiles[newPosition.y][newPosition.x]->isWalkable())
+            {
+                _tiles[newPosition.y][newPosition.x]->onBump();
+                newPosition = oldPosition;
+            }
+
+            _player.setPosition(newPosition);
+
+            // if player moved
+            if(oldPosition != newPosition)
+            {
+                _tiles[newPosition.y][newPosition.x]->onEnter();
+                drawConsole();
+            }
+        }
     }
 }
 

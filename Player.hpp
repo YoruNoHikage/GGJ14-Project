@@ -13,8 +13,8 @@ class Player
 
         sf::Vector2i& getPosition();
         void setPosition(int x, int y);
+        void setPosition(sf::Vector2i position);
 
-        void moveInWorld(int x, int y);
     protected:
 
     private:
