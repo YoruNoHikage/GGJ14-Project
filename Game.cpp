@@ -1,7 +1,14 @@
 #include "Game.hpp"
 
-Game::Game() : _isExiting(false)
+Game::Game() : _isExiting(false), _background(sf::Quads, 4)
 {
+    _background[0].position = sf::Vector2f(0, VIEW_HEIGHT / 2);
+    _background[1].position = sf::Vector2f(VIEW_WIDTH, VIEW_HEIGHT / 2);
+    _background[2].position = sf::Vector2f(VIEW_WIDTH, VIEW_HEIGHT);
+    _background[3].position = sf::Vector2f(0, VIEW_HEIGHT);
+
+    _background[0].color = _background[1].color = sf::Color(255, 255, 255, 0);
+    _background[2].color = _background[3].color = sf::Color(0, 0, 0, 100);
 }
 
 Game::~Game()
@@ -18,8 +25,7 @@ void Game::start()
     settings.antialiasingLevel = 8;
     _app.create(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Samsara", sf::Style::Default, settings);
 
-    sf::View view = _app.getDefaultView();
-    view.setSize(VIEW_WIDTH, VIEW_HEIGHT);
+    sf::View view(sf::FloatRect(0, 0, VIEW_WIDTH, VIEW_HEIGHT));
     _app.setView(view);
 
     std::srand(time(NULL));
@@ -64,6 +70,7 @@ void Game::gameLoop()
     _world.update(elapsed);
 
     _app.clear(sf::Color::White);
+    _app.draw(_background);
 
     _world.draw();
 

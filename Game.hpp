@@ -28,6 +28,9 @@ class Game
 
         // Objects in game
         World _world;
+
+        // Display style (gradient)
+        sf::VertexArray _background;
 };
 
 
