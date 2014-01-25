@@ -4,8 +4,10 @@
 #define WORLD_WIDTH 50
 #define WORLD_HEIGHT 50
 
-#define WINDOW_WIDTH 800
-#define WINDOW_HEIGHT 600
-///@todo: viewport 1280x720
+#define WINDOW_WIDTH 1024
+#define WINDOW_HEIGHT 576
+
+#define VIEW_WIDTH 1280
+#define VIEW_HEIGHT 720
 
 #endif // CONFIG_HPP

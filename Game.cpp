@@ -18,6 +18,10 @@ void Game::start()
     settings.antialiasingLevel = 8;
     _app.create(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Samsara", sf::Style::Default, settings);
 
+    sf::View view = _app.getDefaultView();
+    view.setSize(VIEW_WIDTH, VIEW_HEIGHT);
+    _app.setView(view);
+
     std::srand(time(NULL));
 
     _app.setVerticalSyncEnabled(true);
