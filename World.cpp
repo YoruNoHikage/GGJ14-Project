@@ -51,25 +51,34 @@ void World::update(sf::Time elapsedTime)
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
         {
             _player.moveInWorld(0, 1);
+            markPosition();
             drawConsole();
         }
         else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
         {
             _player.moveInWorld(0, -1);
+            markPosition();
             drawConsole();
         }
 
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
         {
             _player.moveInWorld(1, 0);
+            markPosition();
             drawConsole();
         }
         else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
         {
             _player.moveInWorld(-1, 0);
+            markPosition();
             drawConsole();
         }
     }
+}
+
+void World::markPosition()
+{
+    _tiles[_player.getPosition().x][_player.getPosition().y]->visit();
 }
 
 void World::draw()
@@ -85,6 +94,8 @@ void World::drawConsole()
         {
             if(_player.getPosition().y == i && _player.getPosition().x == j)
                 std::cout << "X";
+            else if(_tiles[j][i]->alreadyVisited())
+                std::cout << "+";
             else
                 std::cout << "0";
         }
