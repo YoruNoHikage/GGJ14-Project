@@ -8,7 +8,7 @@ Player::~Player()
 {
 }
 
-sf::Vector2i& Player::getPosition()
+sf::Vector2i Player::getPosition()
 {
     return _position;
 }
@@ -44,5 +44,3 @@ void Player::moveInWorld(int x, int y)
     if(_path.size() > 20)
         _path.erase(_path.begin());
 }
-
-

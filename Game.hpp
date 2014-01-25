@@ -1,6 +1,7 @@
 #ifndef GAME_HPP
 #define GAME_HPP
 
+#include <cmath>
 #include "SFML/Graphics.hpp"
 
 #include "config.hpp"
@@ -19,10 +20,12 @@ class Game
         bool init();
         void gameLoop();
         void displayPath();
+        void displayDistanceToPoint();
 
         bool _isExiting;
 
         sf::RenderWindow _app;
+        sf::Font _fontQuicksand;
 
         sf::Event _currentEvent;
         sf::Clock _clock;

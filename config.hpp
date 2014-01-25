@@ -20,4 +20,5 @@ typedef enum Direction
 
 typedef std::vector<Direction> Itineraire;
 
+
 #endif // CONFIG_HPP

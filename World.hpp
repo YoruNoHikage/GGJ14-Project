@@ -26,16 +26,18 @@ class World
         void update(sf::Time elapsedTime);
         void markPosition();
         Itineraire getPlayerPath();
-
         void draw();
-
         void drawConsole(); // debug only
+        sf::Vector2i getNextTarget();
+        sf::Vector2i getPlayerPos();
+
+
     protected:
 
     private:
         Player _player;
         Array2DTile _tiles;
-
+        sf::Vector2i _nextTarget;
         sf::Time _elapsedTime;
 
         bool _isLoaded; // if not, we can't draw/use it

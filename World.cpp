@@ -25,14 +25,18 @@ bool World::generate()
 
     // Player start
     _player.setPosition(rand() % (WORLD_WIDTH - 1) + 1, rand() % (WORLD_HEIGHT - 1) + 1);
-    std::cout << "Player position " << _player.getPosition().x << " ; " << _player.getPosition().y << std::endl;
 
     // algorithm generation
 
     int xTmp = rand() % (WORLD_WIDTH - 1) + 1;
     int yTmp = rand() % (WORLD_HEIGHT - 1) + 1;
     _tiles[yTmp][xTmp] = new EventTile();
-    std::cout << "Ending position " << xTmp << " ; " << yTmp << std::endl;
+
+    _nextTarget.x = xTmp;
+    _nextTarget.y = yTmp;
+
+    //std::cout << _nextTarget.x << std::endl;
+
 
     for(int i(0) ; i < WORLD_HEIGHT ; i++)
         for(int j(0) ; j < WORLD_WIDTH ; j++)
@@ -132,12 +136,22 @@ void World::update(sf::Time elapsedTime)
 
 void World::markPosition()
 {
-    _tiles[_player.getPosition().x][_player.getPosition().y]->visit();
+    _tiles[_player.getPosition().y][_player.getPosition().x]->visit();
 }
 
 Itineraire World::getPlayerPath()
 {
     return _player.getPath();
+}
+
+sf::Vector2i World::getNextTarget()
+{
+    return _nextTarget;
+}
+
+sf::Vector2i World::getPlayerPos()
+{
+    return _player.getPosition();
 }
 
 void World::draw()
@@ -153,10 +167,10 @@ void World::drawConsole()
         {
             if(_player.getPosition().y == i && _player.getPosition().x == j)
                 std::cout << "X";
-            else if(_tiles[j][i]->alreadyVisited())
+            else if(_tiles[i][j]->alreadyVisited())
                 std::cout << "+";
             else
-                std::cout << _tiles[j][i]->toChar();
+                std::cout << _tiles[i][j]->toChar();
         }
         std::cout << std::endl;
     }

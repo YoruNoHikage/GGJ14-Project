@@ -1,4 +1,7 @@
 #include "Game.hpp"
+#include "numberToRoman.hpp"
+
+#include <iostream>
 
 Game::Game() : _isExiting(false), _background(sf::Quads, 4)
 {
@@ -9,6 +12,10 @@ Game::Game() : _isExiting(false), _background(sf::Quads, 4)
 
     _background[0].color = _background[1].color = sf::Color(255, 255, 255, 0);
     _background[2].color = _background[3].color = sf::Color(0, 0, 0, 100);
+
+    if (!_fontQuicksand.loadFromFile("quicksand.otf"))
+        exit(EXIT_FAILURE);
+
 }
 
 Game::~Game()
@@ -74,6 +81,7 @@ void Game::gameLoop()
 
     _world.draw();
     displayPath();
+    displayDistanceToPoint();
 
     _app.display();
 }
@@ -106,4 +114,30 @@ void Game::displayPath()
         else if(pathPlayer[i] == RIGHT)
             currPos.x += PATH_WIDTH;
     }
+}
+
+void Game::displayDistanceToPoint()
+{
+    sf::Text text;
+    text.setFont(_fontQuicksand);
+
+    //std::cout << _world.getNextTarget().x << std::endl;
+
+    int deltaX = abs(_world.getNextTarget().x - _world.getPlayerPos().x);
+    if(deltaX > WORLD_WIDTH / 2)
+        deltaX = WORLD_WIDTH - deltaX;
+
+    int deltaY = abs(_world.getNextTarget().y - _world.getPlayerPos().y);
+    if(deltaY > WORLD_HEIGHT / 2)
+        deltaY = WORLD_HEIGHT - deltaY;
+
+    int distance = deltaX + deltaY;
+
+
+    text.setString(numberToRoman(distance));
+
+    text.setColor(sf::Color::Black);
+
+    text.setPosition(10, 10);
+    _app.draw(text);
 }
