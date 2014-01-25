@@ -3,6 +3,8 @@
 #include <iostream>
 #include <ctime>
 
+#include "EventTile.hpp"
+
 World::World() : _elapsedTime(sf::Time::Zero)
 {
 }
@@ -26,13 +28,18 @@ bool World::generate()
     std::cout << "Player position " << _player.getPosition().x << " ; " << _player.getPosition().y << std::endl;
 
     // algorithm generation
+
+    int xTmp = rand() % (WORLD_WIDTH - 1) + 1;
+    int yTmp = rand() % (WORLD_HEIGHT - 1) + 1;
+    _tiles[yTmp][xTmp] = new EventTile();
+    std::cout << "Ending position " << xTmp << " ; " << yTmp << std::endl;
+
     for(int i(0) ; i < WORLD_HEIGHT ; i++)
         for(int j(0) ; j < WORLD_WIDTH ; j++)
         {
-            // remplissage des tableaux
-            _tiles[i][j] = new EmptyTile(); ///@todo: update with the different inherited Tile
-
-            // end tile
+            // remplissage du reste avec des tiles vide
+            if(_tiles[i][j] == NULL)
+                _tiles[i][j] = new EmptyTile(); ///@todo: update with the different inherited Tile
         }
 
     _isLoaded = true;
@@ -49,7 +56,6 @@ void World::update(sf::Time elapsedTime)
         _elapsedTime = sf::Time::Zero;
 
         // Player moves in the world
-        ///@todo: collisions
         sf::Vector2i oldPosition(_player.getPosition());
         sf::Vector2i newPosition(oldPosition);
 
