@@ -32,12 +32,20 @@ void Game::start()
 
     _stateMachine.change("splashscreen");*/ // do we have to use a state machine ?
 
+    if(!init())
+        exit(EXIT_FAILURE);
+
     while(!_isExiting)
     {
         gameLoop();
     }
 
     _app.close();
+}
+
+bool Game::init()
+{
+    return _world.generate();
 }
 
 void Game::gameLoop()

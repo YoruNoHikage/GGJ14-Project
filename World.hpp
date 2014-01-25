@@ -21,7 +21,7 @@ class World
         World();
         ~World();
 
-        bool generateWorld();
+        bool generate();
 
         void update(sf::Time elapsedTime);
 

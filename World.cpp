@@ -14,12 +14,16 @@ World::~World()
             delete _tiles[i][j];
 }
 
-bool World::generateWorld()
+bool World::generate()
 {
     // memory optimization
     _tiles.resize(WORLD_HEIGHT); // resizing directly to avoid too much allocation
     for(int i(0) ; i < WORLD_HEIGHT ; i++)
         _tiles[i].resize(WORLD_WIDTH);
+
+    // Player start
+    _player.setPosition(rand() % (WORLD_WIDTH - 1) + 1, rand() % (WORLD_HEIGHT - 1) + 1);
+    std::cout << "Player position " << _player.getPosition().x << " ; " << _player.getPosition().y << std::endl;
 
     // algorithm generation
     for(int i(0) ; i < WORLD_HEIGHT ; i++)
@@ -27,9 +31,6 @@ bool World::generateWorld()
         {
             // remplissage des tableaux
             _tiles[i][j] = new Tile(); ///@todo: update with the different inherited Tile
-            // rand % (WINDOW_HEIGHT - 1) + 1
-
-            // start tile
 
             // end tile
         }

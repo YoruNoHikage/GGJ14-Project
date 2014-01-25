@@ -16,6 +16,7 @@ class Game
         void start();
 
     private:
+        bool init();
         void gameLoop();
 
         bool _isExiting;
