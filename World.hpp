@@ -25,6 +25,7 @@ class World
 
         void update(sf::Time elapsedTime);
         void markPosition();
+        Itineraire getPlayerPath();
 
         void draw();
 

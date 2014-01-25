@@ -31,7 +31,6 @@ bool World::generate()
         {
             // remplissage des tableaux
             _tiles[i][j] = new Tile(); ///@todo: update with the different inherited Tile
-
             // end tile
         }
 
@@ -48,13 +47,13 @@ void World::update(sf::Time elapsedTime)
 
         // Player moves in the world
         ///@todo: collisions
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+        /*if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
         {
             _player.moveInWorld(0, 1);
             markPosition();
             drawConsole();
-        }
-        else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+        }*/
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
         {
             _player.moveInWorld(0, -1);
             markPosition();
@@ -81,6 +80,11 @@ void World::markPosition()
     _tiles[_player.getPosition().x][_player.getPosition().y]->visit();
 }
 
+Itineraire World::getPlayerPath()
+{
+    return _player.getPath();
+}
+
 void World::draw()
 {
 }
@@ -99,7 +103,6 @@ void World::drawConsole()
             else
                 std::cout << "0";
         }
-
         std::cout << std::endl;
     }
 }

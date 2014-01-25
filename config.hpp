@@ -10,4 +10,14 @@
 #define VIEW_WIDTH 1280
 #define VIEW_HEIGHT 720
 
+#define PATH_WIDTH 50
+#define PATH_HEIGHT 50
+
+typedef enum Direction
+{
+    TOP, BOT, LEFT, RIGHT
+} Direction;
+
+typedef std::vector<Direction> Itineraire;
+
 #endif // CONFIG_HPP
