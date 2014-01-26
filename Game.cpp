@@ -141,3 +141,16 @@ void Game::displayDistanceToPoint()
     text.setPosition(10, 10);
     _app.draw(text);
 }
+
+void Game::displayMonolog(Monolog& monolog)
+{
+    // add to the queue
+    MonologQueue& monologs = getMonologQueue();
+    monologs.push(monolog);
+}
+
+MonologQueue& Game::getMonologQueue()
+{
+    static MonologQueue* _monologs = new MonologQueue();
+    return *_monologs;
+}

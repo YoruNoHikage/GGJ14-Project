@@ -29,6 +29,7 @@ class EventTile : public Tile
         Monolog _monolog;
 
         bool _isEventLoaded;
+        bool _alreadyDisplayed;
 };
 
 

@@ -1,6 +1,8 @@
 #include "EventTile.hpp"
 
-EventTile::EventTile() : _isEventLoaded(false)
+#include "Game.hpp"
+
+EventTile::EventTile() : _isEventLoaded(false), _alreadyDisplayed(false)
 {
 }
 
@@ -22,8 +24,11 @@ bool EventTile::isWalkable()
 
 void EventTile::onEnter()
 {
-    /*if(_isEventLoaded)
-        Game::displayMonolog(_monolog);*/
+    if(_isEventLoaded || !_alreadyDisplayed)
+    {
+        Game::displayMonolog(_monolog);
+        _alreadyDisplayed = true;
+    }
 }
 
 void EventTile::onBump()
