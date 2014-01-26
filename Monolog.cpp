@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "lib/XMLNode.hpp"&
+#include "lib/XMLNode.hpp"
 #include "Monolog.hpp"
 #include "Game.hpp"
 
@@ -14,7 +14,6 @@ Monolog::~Monolog()
 
 bool Monolog::loadFromFile(const std::string& filename)
 {
-    std::cout << "Monolog : loading " << filename << std::endl;
     XMLNode root;
 
     try

@@ -94,7 +94,6 @@ void Game::gameLoop()
     _app.draw(_background);
 
     _world.draw();
-
     displayPath();
 
     displayMonolog();
@@ -111,8 +110,6 @@ void Game::displayPath()
         _event->display(_world.getNextTarget(), _world.getPlayerPos(), _world.getPlayerPath());
 
     _event->displayPath(_world.getPlayerPath());
-
-    _app.display();
 }
 
 void Game::displayMonolog()
