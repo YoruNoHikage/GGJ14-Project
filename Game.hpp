@@ -34,7 +34,7 @@ class Game
 
         static MonologQueue& getMonologQueue();
 
-        bool _isExiting;
+        bool _isExiting, _isPaused;
 
         sf::RenderWindow _app;
         Event *_event;

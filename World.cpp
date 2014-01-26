@@ -86,12 +86,12 @@ void World::generatePositionTile(Tile* tile)
         generatePositionTile(tile);
 }
 
-bool World::update(sf::Time elapsedTime)
+bool World::update(sf::Time elapsedTime, bool pause)
 {
     _elapsedTime += elapsedTime;
     bool _isArrowDown = false;
 
-    if(_elapsedTime >= sf::milliseconds(100))
+    if(_elapsedTime >= sf::milliseconds(100) && !pause)
     {
         _elapsedTime = sf::Time::Zero;
 

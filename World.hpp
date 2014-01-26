@@ -24,7 +24,7 @@ class World
         bool generate();
         void generatePositionTile(Tile* tile);
 
-        bool update(sf::Time elapsedTime);
+        bool update(sf::Time elapsedTime, bool pause);
         void markPosition();
         Itineraire getPlayerPath();
 

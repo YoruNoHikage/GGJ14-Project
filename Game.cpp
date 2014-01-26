@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-Game::Game() : _isExiting(false), _background(sf::Quads, 4)
+Game::Game() : _isExiting(false), _isPaused(false), _background(sf::Quads, 4)
 {
     _background[0].position = sf::Vector2f(0, VIEW_HEIGHT / 2);
     _background[1].position = sf::Vector2f(VIEW_WIDTH, VIEW_HEIGHT / 2);
@@ -73,17 +73,23 @@ void Game::gameLoop()
             case sf::Event::KeyPressed:
                 if(getMonologQueue().size() > 0)
                 {
-                    if(getMonologQueue().front()->isFinished())
-                        getMonologQueue().pop();
-                    else
-                        getMonologQueue().front()->nextLine();
+                    _isPaused = true;
+                    if(_currentEvent.key.code == sf::Keyboard::Space)
+                    {
+                        if(getMonologQueue().front()->isFinished())
+                            getMonologQueue().pop();
+                        else
+                            getMonologQueue().front()->nextLine();
+                    }
                 }
+                else
+                    _isPaused = false;
                 break;
         }
     }
     sf::Time elapsed = _clock.restart();
 
-    if(_world.update(elapsed) && _world.getNbPas() == 0)
+    if(_world.update(elapsed, _isPaused) && _world.getNbPas() == 0)
         _event->changeEventType();
 
     _app.clear(sf::Color::White);
