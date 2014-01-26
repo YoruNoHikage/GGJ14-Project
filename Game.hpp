@@ -5,7 +5,7 @@
 #include "SFML/Graphics.hpp"
 
 #include "config.hpp"
-
+#include "Event.hpp"
 #include "World.hpp"
 
 class Game
@@ -26,6 +26,7 @@ class Game
 
         sf::RenderWindow _app;
         sf::Font _fontQuicksand;
+        Event *_event;
 
         sf::Event _currentEvent;
         sf::Clock _clock;

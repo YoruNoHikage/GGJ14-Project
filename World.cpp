@@ -7,6 +7,7 @@
 
 World::World() : _elapsedTime(sf::Time::Zero)
 {
+    _nbPas = 3;
 }
 
 World::~World()
@@ -51,9 +52,10 @@ bool World::generate()
     return true;
 }
 
-void World::update(sf::Time elapsedTime)
+bool World::update(sf::Time elapsedTime)
 {
     _elapsedTime += elapsedTime;
+    bool _isArrowDown = false;
 
     if(_elapsedTime >= sf::milliseconds(100))
     {
@@ -79,22 +81,46 @@ void World::update(sf::Time elapsedTime)
         {
             _player.moveInWorld(0, 1);
             markPosition();
+            if(_nbPas > 0)
+                _nbPas--;
+            else
+                _nbPas = (rand() % 20) + 3;
+
+            _isArrowDown = true;
         }
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
         {
             _player.moveInWorld(0, -1);
             markPosition();
+            if(_nbPas > 0)
+                _nbPas--;
+            else
+                _nbPas = (rand() % 20) + 3;
+
+            _isArrowDown = true;
         }
 
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
         {
             _player.moveInWorld(1, 0);
             markPosition();
+            if(_nbPas > 0)
+                _nbPas--;
+            else
+                _nbPas = (rand() % 20) + 3;
+
+            _isArrowDown = true;
         }
         else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
         {
             _player.moveInWorld(-1, 0);
             markPosition();
+            if(_nbPas > 0)
+                _nbPas--;
+            else
+                _nbPas = (rand() % 10);
+
+            _isArrowDown = true;
         }
         /// end todo
 
@@ -132,6 +158,8 @@ void World::update(sf::Time elapsedTime)
             }
         }
     }
+
+    return _isArrowDown;
 }
 
 void World::markPosition()
@@ -152,6 +180,16 @@ sf::Vector2i World::getNextTarget()
 sf::Vector2i World::getPlayerPos()
 {
     return _player.getPosition();
+}
+
+int World::getNbPas()
+{
+    return _nbPas;
+}
+
+void World::setNbPas(int nbPas)
+{
+    _nbPas = nbPas;
 }
 
 void World::draw()
