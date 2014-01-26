@@ -5,6 +5,7 @@
 #include <string>
 
 #include "SFML/Graphics.hpp"
+#include "lib/roundedrectangleshape/RoundedRectangleShape.hpp"
 
 typedef std::vector<std::string> ArrayString;
 
@@ -32,7 +33,7 @@ class Monolog : public sf::Drawable
         unsigned int _currentLine;
 
         sf::Text _drawableText;
-        sf::RectangleShape _background;
+        sf::RoundedRectangleShape _background;
 
         bool _isLoaded, _isFinished;
 };

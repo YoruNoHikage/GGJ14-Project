@@ -29,8 +29,7 @@ Itineraire Player::getPath()
     return _path;
 }
 
-///@todo: delete
-void Player::moveInWorld(int x, int y)
+void Player::registerPath(int x, int y)
 {
     if(x > 0 && y == 0)
         _path.push_back(LEFT);

@@ -85,9 +85,13 @@ void Monolog::updateDrawableText()
         _drawableText.setString(_strings[_currentLine]);
         _drawableText.setPosition(VIEW_WIDTH / 2 - _drawableText.getGlobalBounds().width / 2, VIEW_HEIGHT * 3 / 4);
 
-        _background.setSize(sf::Vector2f(_drawableText.getGlobalBounds().width + 20, _drawableText.getGlobalBounds().height + 20));
-        _background.setPosition(_drawableText.getGlobalBounds().left - 10, _drawableText.getGlobalBounds().top - 10);
-        _background.setFillColor(sf::Color(0, 0, 0, 150));
+        int margin = 30;
+        _background.setSize(sf::Vector2f(_drawableText.getGlobalBounds().width + margin, _drawableText.getGlobalBounds().height + margin));
+        _background.setOrigin(0, - _background.getGlobalBounds().height -margin/4);
+        _background.setPosition(_drawableText.getPosition().x - margin/2, _drawableText.getPosition().y - margin/2);
+        _background.setFillColor(sf::Color(0, 0, 0, 200));
+        _background.setCornersRadius(10);
+        _background.setCornerPointCount(5);
     }
 }
 

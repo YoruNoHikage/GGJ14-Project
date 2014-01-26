@@ -22,12 +22,15 @@ class World
         ~World();
 
         bool generate();
+        void generatePositionTile(Tile* tile);
 
         bool update(sf::Time elapsedTime);
         void markPosition();
         Itineraire getPlayerPath();
+
         void draw();
         void drawConsole(); // debug only
+
         sf::Vector2i getNextTarget();
         sf::Vector2i getPlayerPos();
         int getNbPas();
