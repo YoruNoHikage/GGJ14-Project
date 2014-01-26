@@ -5,11 +5,8 @@
 #include <iostream>
 #include <ctime>
 
-#include "EventTile.hpp"
-
-World::World() : _elapsedTime(sf::Time::Zero)
+World::World() : _targets(7), _elapsedTime(sf::Time::Zero), _nbPas(3)
 {
-    _nbPas = 3;
 }
 
 World::~World()
@@ -33,15 +30,16 @@ bool World::generate()
     int yTmp = rand() % (WORLD_HEIGHT - 1) + 1;
     _player.setPosition(xTmp, yTmp);
     // intro = player's position
-    EventTile* intro = new EventTile();
+    EventTile* intro = new EventTile(0);
     intro->loadFromFile("data/checkpoints/intro.xml");
     _tiles[yTmp][xTmp] = intro;
+    _targets[0] = intro;
 
     // Story
     std::vector<EventTile*> reactions(5);
     for(unsigned int i(1) ; i <= 5 ; i++)
     {
-        reactions[i - 1] = new EventTile();
+        reactions[i - 1] = new EventTile(i);
 
         std::stringstream ss;
         ss << i;
@@ -49,16 +47,16 @@ bool World::generate()
         reactions[i - 1]->loadFromFile(filename);
 
         generatePositionTile(reactions[i - 1]);
+        reactions[i - 1]->setActive(false);
 
-        //if(i == 1)
-            //intro->setNextTarget();
-        //else
-            //reactions[i - 1]->setNextTarget(reactions[i]->getPosition());
+        _targets[i] = reactions[i - 1];
     }
 
     EventTile* credits = new EventTile();
     credits->loadFromFile("data/checkpoints/credits.xml");
     generatePositionTile(credits);
+    _targets[6] = credits;
+    credits->setActive(false);
 
     ///@todo: deal with the memoryi.xml
 
@@ -85,7 +83,10 @@ void World::generatePositionTile(Tile* tile)
 
     // if the position is already taken, we regenerate
     if(_tiles[yTmp][xTmp] == NULL)
+    {
         _tiles[yTmp][xTmp] = tile;
+        tile->setPosition(xTmp, yTmp);
+    }
     else
         generatePositionTile(tile);
 }
@@ -154,6 +155,16 @@ bool World::update(sf::Time elapsedTime, bool pause)
                 _isArrowDown = true;
 
                 _tiles[newPosition.y][newPosition.x]->onEnter();
+                if(newPosition == _nextTarget)
+                {
+                    unsigned int nextId = _player.getIdEventTarget() + 1;
+                    if(nextId < _targets.size())
+                    {
+                        _nextTarget = _targets[nextId]->getPosition();
+                        _targets[nextId]->setActive(true);
+                        _player.setIdEventTarget(nextId);
+                    }
+                }
                 drawConsole();
             }
         }

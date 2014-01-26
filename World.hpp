@@ -8,7 +8,10 @@
 #include "config.hpp"
 
 #include "EmptyTile.hpp"
+#include "EventTile.hpp"
 #include "Player.hpp"
+
+typedef std::vector<EventTile*> ArrayEventTile;
 
 typedef std::vector<Tile*> ArrayTile;
 typedef std::vector<ArrayTile> Array2DTile;
@@ -41,6 +44,9 @@ class World
     private:
         Player _player;
         Array2DTile _tiles;
+
+        ArrayEventTile _targets;
+
         sf::Vector2i _nextTarget;
         sf::Time _elapsedTime;
         int _nbPas;

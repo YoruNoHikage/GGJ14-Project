@@ -1,6 +1,6 @@
 #include "Player.hpp"
 
-Player::Player() : _position(sf::Vector2i(0, 0))
+Player::Player() : _position(sf::Vector2i(0, 0)), _idEventTarget(0)
 {
 }
 
@@ -43,3 +43,14 @@ void Player::registerPath(int x, int y)
     if(_path.size() > 20)
         _path.erase(_path.begin());
 }
+
+int Player::getIdEventTarget()
+{
+    return _idEventTarget;
+}
+
+void Player::setIdEventTarget(int id)
+{
+    _idEventTarget = id;
+}
+

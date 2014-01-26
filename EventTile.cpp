@@ -2,8 +2,13 @@
 
 #include "Game.hpp"
 
-EventTile::EventTile() : _isEventLoaded(false), _alreadyDisplayed(false)
+EventTile::EventTile() : _isActive(true), _isEventLoaded(false), _alreadyDisplayed(false), _id(0)
 {
+}
+
+EventTile::EventTile(int id) : EventTile()
+{
+    setId(id);
 }
 
 EventTile::~EventTile()
@@ -17,6 +22,26 @@ bool EventTile::loadFromFile(const std::string& filename)
     return _isEventLoaded;
 }
 
+int EventTile::getId()
+{
+    return _id;
+}
+
+void EventTile::setId(int id)
+{
+    _id = id;
+}
+
+bool EventTile::isActive()
+{
+    return _isActive;
+}
+
+void EventTile::setActive(bool active)
+{
+    _isActive = active;
+}
+
 bool EventTile::isWalkable()
 {
     return true;
@@ -24,7 +49,7 @@ bool EventTile::isWalkable()
 
 void EventTile::onEnter()
 {
-    if(_isEventLoaded || !_alreadyDisplayed)
+    if(_isEventLoaded && !_alreadyDisplayed && _isActive)
     {
         _monolog.init();
         Game::addToMonologQueue(_monolog);
@@ -41,4 +66,3 @@ char EventTile::toChar()
 {
     return 'e';
 }
-

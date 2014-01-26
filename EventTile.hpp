@@ -8,9 +8,16 @@ class EventTile : public Tile
 {
     public:
         EventTile();
+        EventTile(int id);
         ~EventTile();
 
         bool loadFromFile(const std::string& filename);
+
+        int getId();
+        void setId(int id);
+
+        bool isActive();
+        void setActive(bool active);
 
         // If we can walk on it
         bool isWalkable();
@@ -26,8 +33,10 @@ class EventTile : public Tile
     protected:
 
     private:
+        int _id;
         Monolog _monolog;
 
+        bool _isActive;
         bool _isEventLoaded;
         bool _alreadyDisplayed;
 };

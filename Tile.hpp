@@ -2,6 +2,7 @@
 #define TILE_HPP
 
 #include <string>
+#include <SFML/System/Vector2.hpp>
 
 /** \brief Representing one tile (as an obstacle or event)
  *         Abstract
@@ -28,10 +29,15 @@ class Tile
         void visit();
         void forgot();
 
+        sf::Vector2i getPosition();
+        void setPosition(int x, int y);
+
     protected:
 
     private:
         bool _visited;
+
+        sf::Vector2i _position;
 };
 
 
