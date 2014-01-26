@@ -34,7 +34,6 @@ class Game
         static MonologQueue& getMonologQueue();
 
         bool _isExiting;
-        bool _pwet;
 
         sf::RenderWindow _app;
         sf::Font _fontQuicksand;

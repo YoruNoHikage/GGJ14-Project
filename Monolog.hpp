@@ -16,19 +16,25 @@ class Monolog : public sf::Drawable
 
         bool loadFromFile(const std::string& filename);
 
+        void init();
+
         bool isLoaded();
+        bool isFinished();
+
+        void nextLine();
+        void updateDrawableText();
 
     protected:
         void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
     private:
         ArrayString _strings;
-        int _currentString;
+        int _currentLine;
 
         sf::Text _drawableText;
         sf::RectangleShape _background;
 
-        bool _isLoaded;
+        bool _isLoaded, _isFinished;
 };
 
 

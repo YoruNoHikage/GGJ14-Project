@@ -26,6 +26,7 @@ void EventTile::onEnter()
 {
     if(_isEventLoaded || !_alreadyDisplayed)
     {
+        _monolog.init();
         Game::addToMonologQueue(_monolog);
         _alreadyDisplayed = true;
     }

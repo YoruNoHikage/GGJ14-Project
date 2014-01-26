@@ -73,13 +73,18 @@ void Game::gameLoop()
                 _isExiting = true;
                 break;
             case sf::Event::KeyPressed:
-                /*if(getMonologQueue().size() > 0 && )
+                if(getMonologQueue().size() > 0)
                 {
-
-                }*/
+                    if(getMonologQueue().front()->isFinished())
+                    {
+                        getMonologQueue().front()->init();
+                        getMonologQueue().pop();
+                    }
+                    else
+                        getMonologQueue().front()->nextLine();
+                }
                 break;
         }
-
     }
     sf::Time elapsed = _clock.restart();
 
@@ -159,9 +164,6 @@ void Game::displayMonolog()
     {
         Monolog* monolog = getMonologQueue().front();
         _app.draw(*monolog);
-
-        // condition to do
-        //getMonologQueue().pop();
     }
 }
 
