@@ -7,7 +7,7 @@
 
 #include "EventTile.hpp"
 
-World::World() : _elapsedTime(sf::Time::Zero)
+World::World() : _elapsedTime(sf::Time::Zero), _keyPressed(false)
 {
     _nbPas = 3;
 }
@@ -104,6 +104,7 @@ bool World::update(sf::Time elapsedTime, bool pause)
         sf::Vector2i newPosition(oldPosition);
 
         int deltaX(0), deltaY(0);
+
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
             deltaY = 1;
         else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
@@ -116,47 +117,54 @@ bool World::update(sf::Time elapsedTime, bool pause)
 
         if(deltaX != 0 || deltaY != 0)
         {
-            // updating positions
-            newPosition.x += deltaX;
-            newPosition.y += deltaY;
+           if(!_keyPressed)
+           {
+                // updating positions
+                newPosition.x += deltaX;
+                newPosition.y += deltaY;
 
-            // circular map
-            if(newPosition.x >= WORLD_WIDTH)
-                newPosition.x = 0;
-            else if(newPosition.x < 0)
-                newPosition.x = WORLD_WIDTH -1;
+                _keyPressed = true;
 
-            if(newPosition.y >= WORLD_HEIGHT)
-                newPosition.y = 0;
-            else if(newPosition.y < 0)
-                newPosition.y = WORLD_HEIGHT -1;
+                // circular map
+                if(newPosition.x >= WORLD_WIDTH)
+                    newPosition.x = 0;
+                else if(newPosition.x < 0)
+                    newPosition.x = WORLD_WIDTH -1;
 
-            // bumping with an obstacle
-            if(!_tiles[newPosition.y][newPosition.x]->isWalkable())
-            {
-                _tiles[newPosition.y][newPosition.x]->onBump();
-                newPosition = oldPosition;
-            }
+                if(newPosition.y >= WORLD_HEIGHT)
+                    newPosition.y = 0;
+                else if(newPosition.y < 0)
+                    newPosition.y = WORLD_HEIGHT -1;
 
-            _player.setPosition(newPosition);
+                // bumping with an obstacle
+                if(!_tiles[newPosition.y][newPosition.x]->isWalkable())
+                {
+                    _tiles[newPosition.y][newPosition.x]->onBump();
+                    newPosition = oldPosition;
+                }
 
-            // if player moved
-            if(oldPosition != newPosition)
-            {
-                _player.registerPath(deltaX, deltaY);
-                markPosition();
+                _player.setPosition(newPosition);
 
-                if(_nbPas > 0)
-                    _nbPas--;
-                else
-                    _nbPas = (rand() % 10);
+                // if player moved
+                if(oldPosition != newPosition)
+                {
+                    _player.registerPath(deltaX, deltaY);
+                    markPosition();
 
-                _isArrowDown = true;
+                    if(_nbPas > 0)
+                        _nbPas--;
+                    else
+                        _nbPas = (rand() % 5) + 5;
 
-                _tiles[newPosition.y][newPosition.x]->onEnter();
-                drawConsole();
-            }
+                    _isArrowDown = true;
+
+                    _tiles[newPosition.y][newPosition.x]->onEnter();
+                    drawConsole();
+                }
+           }
         }
+        else
+            _keyPressed = false;
     }
 
     return _isArrowDown;

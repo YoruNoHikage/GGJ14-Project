@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-Game::Game() : _isExiting(false), _isPaused(false), _background(sf::Quads, 4)
+Game::Game() : _isExiting(false), _isPaused(false), _isRunning(false), _background(sf::Quads, 4)
 {
     _background[0].position = sf::Vector2f(0, VIEW_HEIGHT / 2);
     _background[1].position = sf::Vector2f(VIEW_WIDTH, VIEW_HEIGHT / 2);
@@ -12,8 +12,15 @@ Game::Game() : _isExiting(false), _isPaused(false), _background(sf::Quads, 4)
     _background[0].color = _background[1].color = sf::Color(255, 255, 255, 0);
     _background[2].color = _background[3].color = sf::Color(0, 0, 0, 100);
 
-    if(!getFont().loadFromFile("quicksand.otf"))
+    if(!getFont().loadFromFile("data/font/quicksand-l.otf"))
         exit(EXIT_FAILURE);
+
+    if (!_music.openFromFile("data/sound/backsound.ogg"))
+        exit(EXIT_FAILURE);
+
+    if(!_logoTex.loadFromFile("data/img/logo.png"))
+        exit(EXIT_FAILURE);
+
 
     _event = new Event(_app);
 }
@@ -45,12 +52,18 @@ void Game::start()
 
     _stateMachine.change("splashscreen");*/ // do we have to use a state machine ?
 
+    _music.play();
+    _music.setLoop(true);
+
     if(!init())
         exit(EXIT_FAILURE);
 
     while(!_isExiting)
     {
-        gameLoop();
+        if(_isRunning)
+            gameLoop();
+        else
+            startScreen();
     }
 
     _app.close();
@@ -59,6 +72,36 @@ void Game::start()
 bool Game::init()
 {
     return _world.generate();
+}
+
+void Game::startScreen()
+{
+    sf::Sprite spriteLogo;
+    spriteLogo.setTexture(_logoTex);
+    sf::Vector2f posLogo;
+
+    posLogo.x = VIEW_WIDTH / 2 - spriteLogo.getLocalBounds().width / 2;
+    posLogo.y = VIEW_HEIGHT / 2 - spriteLogo.getLocalBounds().height / 2;
+    spriteLogo.setPosition(posLogo);
+
+    while(_app.pollEvent(_currentEvent))
+    {
+        switch(_currentEvent.type)
+        {
+            case sf::Event::Closed:
+                _isExiting = true;
+                break;
+            case sf::Event::KeyPressed:
+                 if(_currentEvent.key.code != sf::Keyboard::Escape)
+                    _isRunning = true;
+                else
+                    _isExiting = true;
+                break;
+        }
+    }
+    _app.clear(sf::Color::White);
+    _app.draw(spriteLogo);
+    _app.display();
 }
 
 void Game::gameLoop()
@@ -82,6 +125,8 @@ void Game::gameLoop()
                             getMonologQueue().front()->nextLine();
                     }
                 }
+                if(_currentEvent.key.code == sf::Keyboard::Escape)
+                    _isRunning = false;
                 else
                     _isPaused = false;
                 break;
