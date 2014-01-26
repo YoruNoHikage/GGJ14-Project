@@ -44,7 +44,7 @@ bool World::generate()
 
         std::stringstream ss;
         ss << i;
-        std::string filename("data/checkpoints/reaction"); filename.append(ss.str()); filename.append(".xml");
+        std::string filename("data/checkpoints/checkpoint"); filename.append(ss.str()); filename.append(".xml");
         reactions[i - 1]->loadFromFile(filename);
 
         generatePositionTile(reactions[i - 1]);

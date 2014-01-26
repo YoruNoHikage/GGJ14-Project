@@ -29,13 +29,13 @@ class Monolog : public sf::Drawable
         void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
     private:
-        ArrayString _strings;
+        ArrayString _strings, _page;
         unsigned int _currentLine;
 
-        sf::Text _drawableText;
-        sf::RoundedRectangleShape _background;
+        sf::Text _drawableText, _drawableTextPage;
+        sf::RoundedRectangleShape _background, _backgroundPage;
 
-        bool _isLoaded, _isFinished;
+        bool _isLoaded, _isFinished, _isPageToDraw;
 };
 
 
