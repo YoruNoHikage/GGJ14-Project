@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-Game::Game() : _isExiting(false), _isPaused(false), _isRunning(false), _background(sf::Quads, 4)
+Game::Game() : _isExiting(false), _isPaused(false), _isRunning(false), _isFinished(false), _background(sf::Quads, 4)
 {
     _background[0].position = sf::Vector2f(0, VIEW_HEIGHT / 2);
     _background[1].position = sf::Vector2f(VIEW_WIDTH, VIEW_HEIGHT / 2);
@@ -58,7 +58,7 @@ void Game::start()
     if(!init())
         exit(EXIT_FAILURE);
 
-    while(!_isExiting)
+    while(!_isExiting && !_isFinished)
     {
         if(_isRunning)
             gameLoop();
@@ -166,6 +166,10 @@ void Game::displayMonolog()
     {
         Monolog* monolog = getMonologQueue().front();
         _app.draw(*monolog);
+    }
+    else if(_world.isLastMonolog() && getMonologQueue().size() <= 0)
+    {
+        _isFinished = true;
     }
 }
 

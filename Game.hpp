@@ -37,7 +37,7 @@ class Game
         static MonologQueue& getMonologQueue();
 
         bool _isExiting, _isPaused;
-        bool _isRunning;
+        bool _isRunning, _isFinished;
 
         sf::Texture _logoTex;
 
