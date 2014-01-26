@@ -61,8 +61,8 @@ bool World::generate()
 
     ///@todo: deal with the memoryi.xml
 
-    _nextTarget.x = xTmp;
-    _nextTarget.y = yTmp;
+    _nextTarget.x = reactions[1]->getPosition().x;
+    _nextTarget.y = reactions[1]->getPosition().y;
 
     for(int i(0) ; i < WORLD_HEIGHT ; i++)
         for(int j(0) ; j < WORLD_WIDTH ; j++)
