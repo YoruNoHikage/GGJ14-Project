@@ -56,6 +56,10 @@ bool World::generate()
             //reactions[i - 1]->setNextTarget(reactions[i]->getPosition());
     }
 
+    EventTile* credits = new EventTile();
+    credits->loadFromFile("data/checkpoints/credits.xml");
+    generatePositionTile(credits);
+
     ///@todo: deal with the memoryi.xml
 
     _nextTarget.x = xTmp;
