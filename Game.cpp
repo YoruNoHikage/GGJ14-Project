@@ -20,7 +20,7 @@ Game::Game() : _isExiting(false), _isPaused(false), _isRunning(false), _isFinish
 
     if(!_logoTex.loadFromFile("data/img/logo.png"))
         exit(EXIT_FAILURE);
-
+    _logoTex.setSmooth(true);
 
     _event = new Event(_app);
 }
