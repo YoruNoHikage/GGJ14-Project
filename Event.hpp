@@ -8,7 +8,7 @@
 
 typedef enum eventType
 {
-    DISTANCE
+    DISTANCE, HALO
 }eventType;
 
 class Event
@@ -23,10 +23,14 @@ class Event
 
     private :
         void displayDistanceToPoint(sf::Vector2i nextTarget, sf::Vector2i playerPos);
+        void displayHalo(sf::Vector2i nextTarget, sf::Vector2i playerPos);
 
         sf::RenderWindow& _app;
         sf::Font& _font;
         eventType _type;
+        sf::Texture _leftFootPrintTex;
+        sf::Texture _rightFootPrintTex;
+        sf::Texture _haloTex;
 };
 
 #endif // EVENT_HPP

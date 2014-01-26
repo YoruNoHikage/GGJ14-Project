@@ -33,13 +33,13 @@ Itineraire Player::getPath()
 void Player::moveInWorld(int x, int y)
 {
     if(x > 0 && y == 0)
-        _path.push_back(LEFT);
-    else if(x < 0 && y == 0)
         _path.push_back(RIGHT);
+    else if(x < 0 && y == 0)
+        _path.push_back(LEFT);
     else if(x == 0 && y > 0)
-        _path.push_back(TOP);
-    else if(x == 0 && y < 0)
         _path.push_back(BOT);
+    else if(x == 0 && y < 0)
+        _path.push_back(TOP);
 
     if(_path.size() > 20)
         _path.erase(_path.begin());

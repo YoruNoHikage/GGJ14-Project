@@ -84,7 +84,7 @@ bool World::update(sf::Time elapsedTime)
             if(_nbPas > 0)
                 _nbPas--;
             else
-                _nbPas = (rand() % 20) + 3;
+                _nbPas = (rand() % 5) + 3;
 
             _isArrowDown = true;
         }
@@ -95,7 +95,7 @@ bool World::update(sf::Time elapsedTime)
             if(_nbPas > 0)
                 _nbPas--;
             else
-                _nbPas = (rand() % 20) + 3;
+                _nbPas = (rand() % 5) + 3;
 
             _isArrowDown = true;
         }
@@ -107,7 +107,7 @@ bool World::update(sf::Time elapsedTime)
             if(_nbPas > 0)
                 _nbPas--;
             else
-                _nbPas = (rand() % 20) + 3;
+                _nbPas = (rand() % 5) + 3;
 
             _isArrowDown = true;
         }
@@ -118,7 +118,7 @@ bool World::update(sf::Time elapsedTime)
             if(_nbPas > 0)
                 _nbPas--;
             else
-                _nbPas = (rand() % 10);
+                _nbPas = (rand() % 5) + 3;
 
             _isArrowDown = true;
         }
