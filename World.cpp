@@ -27,23 +27,21 @@ bool World::generate()
     _player.setPosition(rand() % (WORLD_WIDTH - 1) + 1, rand() % (WORLD_HEIGHT - 1) + 1);
 
     // algorithm generation
-
+    EventTile* oneEvent = new EventTile();
+    oneEvent->loadFromFile("test.xml");
     int xTmp = rand() % (WORLD_WIDTH - 1) + 1;
     int yTmp = rand() % (WORLD_HEIGHT - 1) + 1;
-    _tiles[yTmp][xTmp] = new EventTile();
+    _tiles[yTmp][xTmp] = oneEvent;
 
     _nextTarget.x = xTmp;
     _nextTarget.y = yTmp;
-
-    //std::cout << _nextTarget.x << std::endl;
-
 
     for(int i(0) ; i < WORLD_HEIGHT ; i++)
         for(int j(0) ; j < WORLD_WIDTH ; j++)
         {
             // remplissage du reste avec des tiles vide
             if(_tiles[i][j] == NULL)
-                _tiles[i][j] = new EmptyTile(); ///@todo: update with the different inherited Tile
+                _tiles[i][j] = new EmptyTile();
         }
 
     _isLoaded = true;

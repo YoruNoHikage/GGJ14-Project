@@ -1,11 +1,18 @@
 #include "EventTile.hpp"
 
-EventTile::EventTile()
+EventTile::EventTile() : _isEventLoaded(false)
 {
 }
 
 EventTile::~EventTile()
 {
+}
+
+bool EventTile::loadFromFile(const std::string& filename)
+{
+    _isEventLoaded = _monolog.loadFromFile(filename);
+
+    return _isEventLoaded;
 }
 
 bool EventTile::isWalkable()
@@ -15,7 +22,8 @@ bool EventTile::isWalkable()
 
 void EventTile::onEnter()
 {
-    // déclencher l'event
+    /*if(_isEventLoaded)
+        Game::displayMonolog(_monolog);*/
 }
 
 void EventTile::onBump()
@@ -27,3 +35,4 @@ char EventTile::toChar()
 {
     return 'e';
 }
+
