@@ -6,8 +6,9 @@
 #include "SFML/Graphics.hpp"
 
 #include "config.hpp"
-#include "Monolog.hpp"
 
+#include "Monolog.hpp"
+#include "Event.hpp"
 #include "World.hpp"
 
 typedef std::queue<Monolog*> MonologQueue;
@@ -37,6 +38,7 @@ class Game
 
         sf::RenderWindow _app;
         sf::Font _fontQuicksand;
+        Event *_event;
 
         sf::Event _currentEvent;
         sf::Clock _clock;

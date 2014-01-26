@@ -18,6 +18,8 @@ Game::Game() : _isExiting(false), _background(sf::Quads, 4)
 
     if(!getFont().loadFromFile("quicksand.otf"))
         exit(EXIT_FAILURE);
+
+    _event = new Event(_app, _fontQuicksand);
 }
 
 Game::~Game()
@@ -76,10 +78,7 @@ void Game::gameLoop()
                 if(getMonologQueue().size() > 0)
                 {
                     if(getMonologQueue().front()->isFinished())
-                    {
-                        getMonologQueue().front()->init();
                         getMonologQueue().pop();
-                    }
                     else
                         getMonologQueue().front()->nextLine();
                 }
@@ -88,14 +87,15 @@ void Game::gameLoop()
     }
     sf::Time elapsed = _clock.restart();
 
-    _world.update(elapsed);
+    if(_world.update(elapsed) && _world.getNbPas() == 0)
+        _event->changeEventType();
 
     _app.clear(sf::Color::White);
     _app.draw(_background);
 
     _world.draw();
+
     displayPath();
-    displayDistanceToPoint();
 
     displayMonolog();
 
@@ -107,55 +107,12 @@ void Game::displayPath()
     sf::Vector2f size(PATH_WIDTH * 4/5, PATH_HEIGHT * 4/5);
     sf::Vector2f currPos;
 
-    currPos.x = VIEW_WIDTH / 2 - PATH_WIDTH / 2;
-    currPos.y = VIEW_HEIGHT / 2 - PATH_HEIGHT / 2;
+    if(_world.getNbPas() == 0)
+        _event->display(_world.getNextTarget(), _world.getPlayerPos(), _world.getPlayerPath());
 
+    _event->displayPath(_world.getPlayerPath());
 
-    Itineraire pathPlayer = _world.getPlayerPath();
-
-    for(int i = pathPlayer.size(); i > 0; i--)
-    {
-        sf::RectangleShape square(size);
-        square.setFillColor(sf::Color::Black);
-        square.setPosition(currPos);
-
-        _app.draw(square);
-
-        if(pathPlayer[i] == TOP)
-            currPos.y -= PATH_HEIGHT;
-        else if(pathPlayer[i] == BOT)
-            currPos.y += PATH_HEIGHT;
-        else if(pathPlayer[i] == LEFT)
-            currPos.x -= PATH_WIDTH;
-        else if(pathPlayer[i] == RIGHT)
-            currPos.x += PATH_WIDTH;
-    }
-}
-
-void Game::displayDistanceToPoint()
-{
-    sf::Text text;
-    text.setFont(_fontQuicksand);
-
-    //std::cout << _world.getNextTarget().x << std::endl;
-
-    int deltaX = abs(_world.getNextTarget().x - _world.getPlayerPos().x);
-    if(deltaX > WORLD_WIDTH / 2)
-        deltaX = WORLD_WIDTH - deltaX;
-
-    int deltaY = abs(_world.getNextTarget().y - _world.getPlayerPos().y);
-    if(deltaY > WORLD_HEIGHT / 2)
-        deltaY = WORLD_HEIGHT - deltaY;
-
-    int distance = deltaX + deltaY;
-
-
-    text.setString(numberToRoman(distance));
-
-    text.setColor(sf::Color::Black);
-
-    text.setPosition(10, 10);
-    _app.draw(text);
+    _app.display();
 }
 
 void Game::displayMonolog()

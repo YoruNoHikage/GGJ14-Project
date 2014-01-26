@@ -10,7 +10,6 @@ Monolog::Monolog() : _currentLine(0), _isLoaded(false), _isFinished(false)
 
 Monolog::~Monolog()
 {
-
 }
 
 bool Monolog::loadFromFile(const std::string& filename)
