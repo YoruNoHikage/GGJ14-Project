@@ -173,7 +173,9 @@ bool World::update(sf::Time elapsedTime, bool pause)
                         else
                             _lastMonolog = true;
                     }
-                    drawConsole();
+                    #ifdef DEBUG
+                        drawConsole();
+                    #endif
                 }
             }
         }
