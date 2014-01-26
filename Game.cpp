@@ -125,10 +125,11 @@ void Game::gameLoop()
                             getMonologQueue().front()->nextLine();
                     }
                 }
-                if(_currentEvent.key.code == sf::Keyboard::Escape)
-                    _isRunning = false;
                 else
                     _isPaused = false;
+
+                if(_currentEvent.key.code == sf::Keyboard::Escape)
+                    _isRunning = false;
                 break;
         }
     }
