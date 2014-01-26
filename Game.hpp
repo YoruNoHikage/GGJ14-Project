@@ -10,7 +10,7 @@
 
 #include "World.hpp"
 
-typedef std::queue<Monolog> MonologQueue;
+typedef std::queue<Monolog*> MonologQueue;
 
 class Game
 {
@@ -20,17 +20,21 @@ class Game
 
         void start();
 
-        static void displayMonolog(Monolog& monolog);
+        static void addToMonologQueue(Monolog& monolog);
+        static sf::Font& getFont();
 
     private:
         bool init();
         void gameLoop();
+
         void displayPath();
         void displayDistanceToPoint();
+        void displayMonolog();
 
         static MonologQueue& getMonologQueue();
 
         bool _isExiting;
+        bool _pwet;
 
         sf::RenderWindow _app;
         sf::Font _fontQuicksand;

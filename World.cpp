@@ -24,13 +24,14 @@ bool World::generate()
         _tiles[i].resize(WORLD_WIDTH);
 
     // Player start
-    _player.setPosition(rand() % (WORLD_WIDTH - 1) + 1, rand() % (WORLD_HEIGHT - 1) + 1);
+    //_player.setPosition(rand() % (WORLD_WIDTH - 1) + 1, rand() % (WORLD_HEIGHT - 1) + 1);
+    _player.setPosition(0, 0);
 
     // algorithm generation
     EventTile* oneEvent = new EventTile();
     oneEvent->loadFromFile("test.xml");
-    int xTmp = rand() % (WORLD_WIDTH - 1) + 1;
-    int yTmp = rand() % (WORLD_HEIGHT - 1) + 1;
+    int xTmp = 1;//rand() % (WORLD_WIDTH - 1) + 1;
+    int yTmp = 1;//rand() % (WORLD_HEIGHT - 1) + 1;
     _tiles[yTmp][xTmp] = oneEvent;
 
     _nextTarget.x = xTmp;

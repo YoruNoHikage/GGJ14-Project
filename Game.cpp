@@ -16,6 +16,8 @@ Game::Game() : _isExiting(false), _background(sf::Quads, 4)
     if (!_fontQuicksand.loadFromFile("quicksand.otf"))
         exit(EXIT_FAILURE);
 
+    if(!getFont().loadFromFile("quicksand.otf"))
+        exit(EXIT_FAILURE);
 }
 
 Game::~Game()
@@ -69,6 +71,13 @@ void Game::gameLoop()
         {
             case sf::Event::Closed:
                 _isExiting = true;
+                break;
+            case sf::Event::KeyPressed:
+                /*if(getMonologQueue().size() > 0 && )
+                {
+
+                }*/
+                break;
         }
 
     }
@@ -82,6 +91,8 @@ void Game::gameLoop()
     _world.draw();
     displayPath();
     displayDistanceToPoint();
+
+    displayMonolog();
 
     _app.display();
 }
@@ -142,15 +153,33 @@ void Game::displayDistanceToPoint()
     _app.draw(text);
 }
 
-void Game::displayMonolog(Monolog& monolog)
+void Game::displayMonolog()
+{
+    if(getMonologQueue().size() > 0)
+    {
+        Monolog* monolog = getMonologQueue().front();
+        _app.draw(*monolog);
+
+        // condition to do
+        //getMonologQueue().pop();
+    }
+}
+
+void Game::addToMonologQueue(Monolog& monolog)
 {
     // add to the queue
     MonologQueue& monologs = getMonologQueue();
-    monologs.push(monolog);
+    monologs.push(&monolog);
 }
 
 MonologQueue& Game::getMonologQueue()
 {
     static MonologQueue* _monologs = new MonologQueue();
     return *_monologs;
+}
+
+sf::Font& Game::getFont()
+{
+    static sf::Font* font = new sf::Font();
+    return *font;
 }
