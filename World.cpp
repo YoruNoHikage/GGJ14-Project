@@ -34,6 +34,7 @@ bool World::generate()
     intro->loadFromFile("data/checkpoints/intro.xml");
     _tiles[yTmp][xTmp] = intro;
     _targets[0] = intro;
+    intro->onEnter();
 
     // Story
     std::vector<EventTile*> reactions(5);
