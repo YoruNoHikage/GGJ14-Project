@@ -13,7 +13,7 @@
 #define PATH_WIDTH 50
 #define PATH_HEIGHT 50
 
-#define DEBUG
+//#define DEBUG
 
 typedef enum Direction
 {
