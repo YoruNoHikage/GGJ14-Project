@@ -12,8 +12,8 @@ World::World() : _elapsedTime(sf::Time::Zero)
 
 World::~World()
 {
-    for(int i(0) ; i < _tiles.size() ; i++)
-        for(int j(0) ; j < _tiles[i].size() ; j++)
+    for(unsigned int i(0) ; i < _tiles.size() ; i++)
+        for(unsigned int j(0) ; j < _tiles[i].size() ; j++)
             delete _tiles[i][j];
 }
 

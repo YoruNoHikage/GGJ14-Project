@@ -29,7 +29,7 @@ class Monolog : public sf::Drawable
 
     private:
         ArrayString _strings;
-        int _currentLine;
+        unsigned int _currentLine;
 
         sf::Text _drawableText;
         sf::RectangleShape _background;

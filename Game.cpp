@@ -1,5 +1,4 @@
 #include "Game.hpp"
-#include "numberToRoman.hpp"
 
 #include <iostream>
 
@@ -13,13 +12,10 @@ Game::Game() : _isExiting(false), _background(sf::Quads, 4)
     _background[0].color = _background[1].color = sf::Color(255, 255, 255, 0);
     _background[2].color = _background[3].color = sf::Color(0, 0, 0, 100);
 
-    if (!_fontQuicksand.loadFromFile("quicksand.otf"))
-        exit(EXIT_FAILURE);
-
     if(!getFont().loadFromFile("quicksand.otf"))
         exit(EXIT_FAILURE);
 
-    _event = new Event(_app, _fontQuicksand);
+    _event = new Event(_app);
 }
 
 Game::~Game()

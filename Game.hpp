@@ -37,7 +37,6 @@ class Game
         bool _isExiting;
 
         sf::RenderWindow _app;
-        sf::Font _fontQuicksand;
         Event *_event;
 
         sf::Event _currentEvent;

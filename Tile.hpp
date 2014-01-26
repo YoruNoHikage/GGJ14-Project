@@ -10,7 +10,7 @@ class Tile
 {
     public:
         Tile();
-        ~Tile();
+        virtual ~Tile();
 
         // If we can walk on it
         virtual bool isWalkable() = 0;
