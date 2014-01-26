@@ -4,6 +4,7 @@
 #include <cmath>
 #include <queue>
 #include "SFML/Graphics.hpp"
+#include "SFML/Audio.hpp"
 
 #include "config.hpp"
 
@@ -26,6 +27,7 @@ class Game
 
     private:
         bool init();
+        void startScreen();
         void gameLoop();
 
         void displayPath();
@@ -35,12 +37,16 @@ class Game
         static MonologQueue& getMonologQueue();
 
         bool _isExiting, _isPaused;
+        bool _isRunning;
+
+        sf::Texture _logoTex;
 
         sf::RenderWindow _app;
         Event *_event;
 
         sf::Event _currentEvent;
         sf::Clock _clock;
+        sf::Music _music;
 
         // Objects in game
         World _world;

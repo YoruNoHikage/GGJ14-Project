@@ -50,6 +50,7 @@ class World
         sf::Vector2i _nextTarget;
         sf::Time _elapsedTime;
         int _nbPas;
+        bool _keyPressed;
 
         bool _isLoaded; // if not, we can't draw/use it
 };

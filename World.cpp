@@ -5,7 +5,7 @@
 #include <iostream>
 #include <ctime>
 
-World::World() : _targets(7), _elapsedTime(sf::Time::Zero), _nbPas(3)
+World::World() : _targets(7), _elapsedTime(sf::Time::Zero), _nbPas(3), _keyPressed(false)
 {
 }
 
@@ -106,6 +106,7 @@ bool World::update(sf::Time elapsedTime, bool pause)
         sf::Vector2i newPosition(oldPosition);
 
         int deltaX(0), deltaY(0);
+
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
             deltaY = 1;
         else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
@@ -118,57 +119,64 @@ bool World::update(sf::Time elapsedTime, bool pause)
 
         if(deltaX != 0 || deltaY != 0)
         {
-            // updating positions
-            newPosition.x += deltaX;
-            newPosition.y += deltaY;
-
-            // circular map
-            if(newPosition.x >= WORLD_WIDTH)
-                newPosition.x = 0;
-            else if(newPosition.x < 0)
-                newPosition.x = WORLD_WIDTH -1;
-
-            if(newPosition.y >= WORLD_HEIGHT)
-                newPosition.y = 0;
-            else if(newPosition.y < 0)
-                newPosition.y = WORLD_HEIGHT -1;
-
-            // bumping with an obstacle
-            if(!_tiles[newPosition.y][newPosition.x]->isWalkable())
+            if(!_keyPressed)
             {
-                _tiles[newPosition.y][newPosition.x]->onBump();
-                newPosition = oldPosition;
-            }
+                // updating positions
+                newPosition.x += deltaX;
+                newPosition.y += deltaY;
 
-            _player.setPosition(newPosition);
+                _keyPressed = true;
 
-            // if player moved
-            if(oldPosition != newPosition)
-            {
-                _player.registerPath(deltaX, deltaY);
-                markPosition();
+                // circular map
+                if(newPosition.x >= WORLD_WIDTH)
+                    newPosition.x = 0;
+                else if(newPosition.x < 0)
+                    newPosition.x = WORLD_WIDTH -1;
 
-                if(_nbPas > 0)
-                    _nbPas--;
-                else
-                    _nbPas = (rand() % 10);
+                if(newPosition.y >= WORLD_HEIGHT)
+                    newPosition.y = 0;
+                else if(newPosition.y < 0)
+                    newPosition.y = WORLD_HEIGHT -1;
 
-                _isArrowDown = true;
-
-                _tiles[newPosition.y][newPosition.x]->onEnter();
-                if(newPosition == _nextTarget)
+                // bumping with an obstacle
+                if(!_tiles[newPosition.y][newPosition.x]->isWalkable())
                 {
-                    unsigned int nextId = _player.getIdEventTarget() + 1;
-                    if(nextId < _targets.size())
-                    {
-                        _nextTarget = _targets[nextId]->getPosition();
-                        _targets[nextId]->setActive(true);
-                        _player.setIdEventTarget(nextId);
-                    }
+                    _tiles[newPosition.y][newPosition.x]->onBump();
+                    newPosition = oldPosition;
                 }
-                drawConsole();
+
+                _player.setPosition(newPosition);
+
+                // if player moved
+                if(oldPosition != newPosition)
+                {
+                    _player.registerPath(deltaX, deltaY);
+                    markPosition();
+
+                    if(_nbPas > 0)
+                        _nbPas--;
+                    else
+                        _nbPas = (rand() % 10);
+
+                    _isArrowDown = true;
+
+                    _tiles[newPosition.y][newPosition.x]->onEnter();
+                    if(newPosition == _nextTarget)
+                    {
+                        unsigned int nextId = _player.getIdEventTarget() + 1;
+                        if(nextId < _targets.size())
+                        {
+                            _nextTarget = _targets[nextId]->getPosition();
+                            _targets[nextId]->setActive(true);
+                            _player.setIdEventTarget(nextId);
+                        }
+                    }
+                    drawConsole();
+                }
             }
         }
+        else
+            _keyPressed = false;
     }
 
     return _isArrowDown;

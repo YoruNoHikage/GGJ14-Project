@@ -3,13 +3,12 @@
 
 Event::Event(sf::RenderWindow &app) : _app(app), _type(DISTANCE), _text("", Game::getFont())
 {
-    if(!_haloTex.loadFromFile("halo.png"))
+    if(!_haloTex.loadFromFile("halo2.png"))
         exit(EXIT_FAILURE);
     /*if(!_leftFootPrintTex.loadFromFile("pas-gauche.png"))
         exit(EXIT_FAILURE);
     if(!_rightFootPrintTex.loadFromFile("pas-droit.png"))
         exit(EXIT_FAILURE);*/
-
 }
 
 Event::~Event(){}
@@ -23,7 +22,7 @@ void Event::displayPath(Itineraire pathPlayer)
     currPos.x = VIEW_WIDTH / 2 - PATH_WIDTH / 2;
     currPos.y = VIEW_HEIGHT / 2 - PATH_HEIGHT / 2;
 
-    for(int i = pathPlayer.size(); i > 0; i--)
+    for(int i = pathPlayer.size() - 1; i >= 0; i--)
     {
         sf::RectangleShape square(size);
         sf::CircleShape circle(size.x * 0.5);
@@ -34,7 +33,7 @@ void Event::displayPath(Itineraire pathPlayer)
         square.setPosition(currPos);
         circle.setPosition(currPos);
 
-        if(i == pathPlayer.size())
+        if(i == pathPlayer.size() - 1)
             _app.draw(square);
         else
             _app.draw(circle);
@@ -93,10 +92,11 @@ void Event::displayDistanceToPoint(sf::Vector2i nextTarget, sf::Vector2i playerP
     int distance = deltaX + deltaY;
 
     _text.setString(numberToRoman(distance));
+    _text.setCharacterSize(120);
 
     _text.setColor(sf::Color::Black);
 
-    _text.setPosition(10, 10);
+    _text.setPosition(30, 10);
     _app.draw(_text);
 }
 
