@@ -1,9 +1,8 @@
 #include "Game.hpp"
-#include "numberToRoman.hpp"
 
 #include <iostream>
 
-Game::Game() : _isExiting(false), _background(sf::Quads, 4)
+Game::Game() : _isExiting(false), _isPaused(false), _background(sf::Quads, 4)
 {
     _background[0].position = sf::Vector2f(0, VIEW_HEIGHT / 2);
     _background[1].position = sf::Vector2f(VIEW_WIDTH, VIEW_HEIGHT / 2);
@@ -13,10 +12,10 @@ Game::Game() : _isExiting(false), _background(sf::Quads, 4)
     _background[0].color = _background[1].color = sf::Color(255, 255, 255, 0);
     _background[2].color = _background[3].color = sf::Color(0, 0, 0, 100);
 
-    if (!_fontQuicksand.loadFromFile("quicksand.otf"))
+    if(!getFont().loadFromFile("quicksand.otf"))
         exit(EXIT_FAILURE);
 
-    _event = new Event(_app, _fontQuicksand);
+    _event = new Event(_app);
 }
 
 Game::~Game()
@@ -70,22 +69,75 @@ void Game::gameLoop()
         {
             case sf::Event::Closed:
                 _isExiting = true;
+                break;
+            case sf::Event::KeyPressed:
+                if(getMonologQueue().size() > 0)
+                {
+                    _isPaused = true;
+                    if(_currentEvent.key.code == sf::Keyboard::Space)
+                    {
+                        if(getMonologQueue().front()->isFinished())
+                            getMonologQueue().pop();
+                        else
+                            getMonologQueue().front()->nextLine();
+                    }
+                }
+                else
+                    _isPaused = false;
+                break;
         }
     }
     sf::Time elapsed = _clock.restart();
 
-    if(_world.update(elapsed) && _world.getNbPas() == 0)
+    if(_world.update(elapsed, _isPaused) && _world.getNbPas() == 0)
         _event->changeEventType();
 
     _app.clear(sf::Color::White);
     _app.draw(_background);
 
     _world.draw();
+    displayPath();
+
+    displayMonolog();
+
+    _app.display();
+}
+
+void Game::displayPath()
+{
+    sf::Vector2f size(PATH_WIDTH * 4/5, PATH_HEIGHT * 4/5);
+    sf::Vector2f currPos;
 
     if(_world.getNbPas() == 0)
         _event->display(_world.getNextTarget(), _world.getPlayerPos(), _world.getPlayerPath());
 
     _event->displayPath(_world.getPlayerPath());
+}
 
-    _app.display();
+void Game::displayMonolog()
+{
+    if(getMonologQueue().size() > 0)
+    {
+        Monolog* monolog = getMonologQueue().front();
+        _app.draw(*monolog);
+    }
+}
+
+void Game::addToMonologQueue(Monolog& monolog)
+{
+    // add to the queue
+    MonologQueue& monologs = getMonologQueue();
+    monologs.push(&monolog);
+}
+
+MonologQueue& Game::getMonologQueue()
+{
+    static MonologQueue* _monologs = new MonologQueue();
+    return *_monologs;
+}
+
+sf::Font& Game::getFont()
+{
+    static sf::Font* font = new sf::Font();
+    return *font;
 }

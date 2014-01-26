@@ -1,5 +1,7 @@
 #include "World.hpp"
 
+#include <sstream>
+#include <string>
 #include <iostream>
 #include <ctime>
 
@@ -12,8 +14,8 @@ World::World() : _elapsedTime(sf::Time::Zero)
 
 World::~World()
 {
-    for(int i(0) ; i < _tiles.size() ; i++)
-        for(int j(0) ; j < _tiles[i].size() ; j++)
+    for(unsigned int i(0) ; i < _tiles.size() ; i++)
+        for(unsigned int j(0) ; j < _tiles[i].size() ; j++)
             delete _tiles[i][j];
 }
 
@@ -24,27 +26,51 @@ bool World::generate()
     for(int i(0) ; i < WORLD_HEIGHT ; i++)
         _tiles[i].resize(WORLD_WIDTH);
 
+    /// algorithm generation
+
     // Player start
-    _player.setPosition(rand() % (WORLD_WIDTH - 1) + 1, rand() % (WORLD_HEIGHT - 1) + 1);
-
-    // algorithm generation
-
     int xTmp = rand() % (WORLD_WIDTH - 1) + 1;
     int yTmp = rand() % (WORLD_HEIGHT - 1) + 1;
-    _tiles[yTmp][xTmp] = new EventTile();
+    _player.setPosition(xTmp, yTmp);
+    // intro = player's position
+    EventTile* intro = new EventTile();
+    intro->loadFromFile("data/checkpoints/intro.xml");
+    _tiles[yTmp][xTmp] = intro;
+
+    // Story
+    std::vector<EventTile*> reactions(5);
+    for(unsigned int i(1) ; i <= 5 ; i++)
+    {
+        reactions[i - 1] = new EventTile();
+
+        std::stringstream ss;
+        ss << i;
+        std::string filename("data/checkpoints/reaction"); filename.append(ss.str()); filename.append(".xml");
+        reactions[i - 1]->loadFromFile(filename);
+
+        generatePositionTile(reactions[i - 1]);
+
+        //if(i == 1)
+            //intro->setNextTarget();
+        //else
+            //reactions[i - 1]->setNextTarget(reactions[i]->getPosition());
+    }
+
+    EventTile* credits = new EventTile();
+    credits->loadFromFile("data/checkpoints/credits.xml");
+    generatePositionTile(credits);
+
+    ///@todo: deal with the memoryi.xml
 
     _nextTarget.x = xTmp;
     _nextTarget.y = yTmp;
-
-    //std::cout << _nextTarget.x << std::endl;
-
 
     for(int i(0) ; i < WORLD_HEIGHT ; i++)
         for(int j(0) ; j < WORLD_WIDTH ; j++)
         {
             // remplissage du reste avec des tiles vide
             if(_tiles[i][j] == NULL)
-                _tiles[i][j] = new EmptyTile(); ///@todo: update with the different inherited Tile
+                _tiles[i][j] = new EmptyTile();
         }
 
     _isLoaded = true;
@@ -52,12 +78,24 @@ bool World::generate()
     return true;
 }
 
-bool World::update(sf::Time elapsedTime)
+void World::generatePositionTile(Tile* tile)
+{
+    int xTmp = rand() % (WORLD_WIDTH - 1) + 1;
+    int yTmp = rand() % (WORLD_HEIGHT - 1) + 1;
+
+    // if the position is already taken, we regenerate
+    if(_tiles[yTmp][xTmp] == NULL)
+        _tiles[yTmp][xTmp] = tile;
+    else
+        generatePositionTile(tile);
+}
+
+bool World::update(sf::Time elapsedTime, bool pause)
 {
     _elapsedTime += elapsedTime;
     bool _isArrowDown = false;
 
-    if(_elapsedTime >= sf::milliseconds(100))
+    if(_elapsedTime >= sf::milliseconds(100) && !pause)
     {
         _elapsedTime = sf::Time::Zero;
 
@@ -75,54 +113,6 @@ bool World::update(sf::Time elapsedTime)
             deltaX = 1;
         else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
             deltaX = -1;
-
-        ///@todo: delete
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-        {
-            _player.moveInWorld(0, 1);
-            markPosition();
-            if(_nbPas > 0)
-                _nbPas--;
-            else
-                _nbPas = (rand() % 5) + 3;
-
-            _isArrowDown = true;
-        }
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-        {
-            _player.moveInWorld(0, -1);
-            markPosition();
-            if(_nbPas > 0)
-                _nbPas--;
-            else
-                _nbPas = (rand() % 5) + 3;
-
-            _isArrowDown = true;
-        }
-
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-        {
-            _player.moveInWorld(1, 0);
-            markPosition();
-            if(_nbPas > 0)
-                _nbPas--;
-            else
-                _nbPas = (rand() % 5) + 3;
-
-            _isArrowDown = true;
-        }
-        else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-        {
-            _player.moveInWorld(-1, 0);
-            markPosition();
-            if(_nbPas > 0)
-                _nbPas--;
-            else
-                _nbPas = (rand() % 5) + 3;
-
-            _isArrowDown = true;
-        }
-        /// end todo
 
         if(deltaX != 0 || deltaY != 0)
         {
@@ -153,6 +143,16 @@ bool World::update(sf::Time elapsedTime)
             // if player moved
             if(oldPosition != newPosition)
             {
+                _player.registerPath(deltaX, deltaY);
+                markPosition();
+
+                if(_nbPas > 0)
+                    _nbPas--;
+                else
+                    _nbPas = (rand() % 10);
+
+                _isArrowDown = true;
+
                 _tiles[newPosition.y][newPosition.x]->onEnter();
                 drawConsole();
             }

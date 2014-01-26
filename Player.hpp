@@ -6,8 +6,6 @@
 
 #include "config.hpp"
 
-#include "SFML/Graphics/Transformable.hpp"
-
 class Player
 {
     public:
@@ -18,7 +16,7 @@ class Player
         void setPosition(int x, int y);
 
         void setPosition(sf::Vector2i position);
-        void moveInWorld(int x, int y); ///@todo: delete
+        void registerPath(int x, int y);
 
         Itineraire getPath();
 
