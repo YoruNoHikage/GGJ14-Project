@@ -37,7 +37,9 @@ bool Monolog::loadFromFile(const std::string& filename)
         for(std::vector<Node*>::iterator itr = lines.begin() ; itr != lines.end() ; ++itr)
         {
             _strings.push_back((*itr)->getValue());
+            #ifdef DEBUG
             std::cout << (*itr)->getValue() << std::endl;
+            #endif
         }
 
         _drawableText.setFont(Game::getFont());
@@ -50,7 +52,9 @@ bool Monolog::loadFromFile(const std::string& filename)
     catch(std::exception const& e)
     {
         _strings.push_back(e.what());
+        #ifdef DEBUG
         std::cout << e.what() << std::endl;
+        #endif
     }
 
     return true;

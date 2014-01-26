@@ -5,7 +5,7 @@
 #include <iostream>
 #include <ctime>
 
-World::World() : _targets(7), _elapsedTime(sf::Time::Zero), _nbPas(3), _keyPressed(false)
+World::World() : _targets(7), _elapsedTime(sf::Time::Zero), _nbPas(3), _lastMonolog(false), _keyPressed(false)
 {
 }
 
@@ -170,8 +170,12 @@ bool World::update(sf::Time elapsedTime, bool pause)
                             _targets[nextId]->setActive(true);
                             _player.setIdEventTarget(nextId);
                         }
+                        else
+                            _lastMonolog = true;
                     }
-                    drawConsole();
+                    #ifdef DEBUG
+                        drawConsole();
+                    #endif
                 }
             }
         }
@@ -210,6 +214,16 @@ int World::getNbPas()
 void World::setNbPas(int nbPas)
 {
     _nbPas = nbPas;
+}
+
+bool World::isLastMonolog()
+{
+    return _lastMonolog;
+}
+
+void World::setLastMonolog(bool lastMonolog)
+{
+    _lastMonolog = lastMonolog;
 }
 
 void World::draw()

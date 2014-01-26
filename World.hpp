@@ -38,6 +38,8 @@ class World
         sf::Vector2i getPlayerPos();
         int getNbPas();
         void setNbPas(int nbPas);
+        bool isLastMonolog();
+        void setLastMonolog(bool lastMonolog);
 
     protected:
 
@@ -50,7 +52,7 @@ class World
         sf::Vector2i _nextTarget;
         sf::Time _elapsedTime;
         int _nbPas;
-        bool _keyPressed;
+        bool _keyPressed, _lastMonolog;
 
         bool _isLoaded; // if not, we can't draw/use it
 };
